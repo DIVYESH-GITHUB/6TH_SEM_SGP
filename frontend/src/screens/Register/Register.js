@@ -1,4 +1,3 @@
-// create a component
 //import liraries
 import React, { useState } from "react";
 import {
@@ -23,6 +22,7 @@ import Input from "../../components/input";
 import Button from "../../components/button";
 import AuthNavigate from "../../components/authNavigate";
 import navigationStrings from "../../navigations/navigationStrings";
+import axios from "axios";
 
 // create a component
 const Register = () => {
@@ -32,7 +32,71 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showLoading, setShowLoading] = useState(false);
 
-  const handleSignUp = async () => {};
+  const validate = () => {
+    if (email == "") {
+      Alert.alert("Registration Error", "Email not provided");
+      return false;
+    }
+    if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+      Alert.alert("Registration Error", "Email is not valid");
+      return false;
+    }
+    if (userName == "") {
+      Alert.alert("Registration Error", "Username not provided");
+      return false;
+    }
+    if (!userName.match("^[a-z0-9_-]{3,16}$")) {
+      Alert.alert("Registration Error", "Username is not valid");
+      return false;
+    }
+    if (password == "") {
+      Alert.alert("Registration Error", "Password not provided");
+      return false;
+    }
+    if (password.length <= 6) {
+      Alert.alert(
+        "Registration Error",
+        "Password length should be more than 6 characters"
+      );
+      return false;
+    }
+    if (password != confirmPassword) {
+      Alert.alert("Registration Error", "Passwords doesn't match");
+      return false;
+    }
+    return true;
+  };
+
+  const handleSignUp = async () => {
+    Keyboard.dismiss();
+    setShowLoading(true);
+
+    if (validate()) {
+      await axios
+        .post("http://192.168.137.1:3000/api/v1/users/register", {
+          email: email,
+          userName: userName,
+          password: password,
+          confirmPassword: confirmPassword,
+        })
+        .then((response) => {
+          if (response.status == 201) {
+            setShowLoading(false);
+            Alert.alert("Registration Success", response.data.message);
+            navigation.canGoBack()
+              ? navigation.goBack()
+              : navigation.navigate(navigationStrings.Login);
+          }
+        })
+        .catch((error) => {
+          setShowLoading(false);
+          Alert.alert("Registration Error", error.response.data.errorMessage);
+        });
+    } else {
+      setShowLoading(false);
+      return;
+    }
+  };
 
   const navigation = useNavigation();
 
@@ -56,7 +120,7 @@ const Register = () => {
             onPress={() =>
               navigation.canGoBack()
                 ? navigation.goBack()
-                : navigation.navigate(navigationStrings.LOGIN)
+                : navigation.navigate(navigationStrings.Login)
             }
           />
 

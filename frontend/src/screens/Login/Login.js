@@ -8,8 +8,9 @@ import {
   StatusBar,
   View,
   Text,
-  Alert,
   Image,
+  Keyboard,
+  Alert,
 } from "react-native";
 import colors from "../../constants/colors";
 import {
@@ -31,7 +32,53 @@ const Login = () => {
 
   const navigation = useNavigation();
 
-  async function handleLogin() {}
+  const validate = () => {
+    if (email == "") {
+      Alert.alert("Login Error", "Email not provided");
+      return false;
+    }
+    if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+      Alert.alert("Login Error", "Email is not valid");
+      return false;
+    }
+    if (password == "") {
+      Alert.alert("Login Error", "Password not provided");
+      return false;
+    }
+    if (password.length <= 6) {
+      Alert.alert(
+        "Login Error",
+        "Password length should be more than 6 characters"
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const handleLogin = async () => {
+    Keyboard.dismiss();
+    setShowLoading(true);
+    if (validate()) {
+      await axios
+        .post("http://192.168.137.1:3000/api/v1/users/login", {
+          emailOrUsername: email,
+          password: password,
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            setShowLoading(false);
+            Alert.alert("Login Success", response.data.message);
+          }
+        })
+        .catch((error) => {
+          setShowLoading(false);
+          Alert.alert("Login Error", error.response.data.errorMessage);
+        });
+    } else {
+      setShowLoading(false);
+      return;
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -58,7 +105,7 @@ const Login = () => {
             iconName={"mail"}
             onChangeText={(text) => setEmail(text)}
             placeholder={"user123@gmail.com"}
-            text={"Email"}
+            text={"Email or Username"}
             value={email}
           />
 
