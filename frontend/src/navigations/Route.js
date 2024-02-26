@@ -10,7 +10,7 @@ import navigationStrings from "./navigationStrings";
 export default function Routes() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={navigationStrings.Login}>
+      <Stack.Navigator initialRouteName={navigationStrings.TabRoutes}>
         {AuthStack(Stack)}
         {MainStack(Stack)}
       </Stack.Navigator>

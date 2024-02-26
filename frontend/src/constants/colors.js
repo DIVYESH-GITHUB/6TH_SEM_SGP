@@ -4,4 +4,5 @@ export default {
   secondfontcolor: "#96939E",
   lightcolor: "#38304C",
   neoncolor: "#00DDB3",
+  
 };

@@ -1,5 +1,5 @@
-import * as Screens from "../screens";
 import navigationStrings from "./navigationStrings";
+import * as Screens from "../screens";
 
 export default function (Stack) {
   return (

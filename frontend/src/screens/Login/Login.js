@@ -23,6 +23,7 @@ import Button from "../../components/button";
 import AuthNavigate from "../../components/authNavigate";
 import navigationStrings from "../../navigations/navigationStrings";
 import axios from "axios";
+import { url } from "../../constants/backendUrl";
 
 // create a component
 const Login = () => {
@@ -60,7 +61,7 @@ const Login = () => {
     setShowLoading(true);
     if (validate()) {
       await axios
-        .post("http://192.168.137.1:3000/api/v1/users/login", {
+        .post(`http://${url}:3000/api/v1/users/login`, {
           emailOrUsername: email,
           password: password,
         })
