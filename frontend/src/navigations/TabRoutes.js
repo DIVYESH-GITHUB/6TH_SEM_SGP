@@ -3,11 +3,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import navigationStrings from "./navigationStrings";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import colors from "../constants/colors";
+import ScanTab from "./../screens/Scan-Screen/ScanTab";
+//import UploadTab from "./../screens/Upload-Screen/UploadTab";
 import {
   responsiveHeight as h,
   responsiveFontSize as f,
   responsiveScreenWidth as w,
 } from "react-native-responsive-dimensions";
+import UploadTab from "../screens/Upload-Screen/UploadTab";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,12 +24,12 @@ const TabRoutes = () => {
           let iconName;
           if (route.name === navigationStrings.Home) {
             iconName = focused ? "home" : "home-outline";
-          } else if (route.name === navigationStrings.Setting) {
+          } else if (route.name === navigationStrings.ScanTab) {
             iconName = focused ? "settings" : "settings-outline";
-          } else if (route.name === navigationStrings.History) {
-            iconName = "history";
+          } else if (route.name === navigationStrings.UploadTab) {
+            iconName = "file-upload";
           }
-          if (route.name === navigationStrings.History) {
+          if (route.name === navigationStrings.UploadTab) {
             return <FontAwesome5 name={iconName} size={size} color={color} />;
           }
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -45,12 +48,12 @@ const TabRoutes = () => {
     >
       <Tab.Screen name={navigationStrings.Home} component={Screens.Home} />
       <Tab.Screen
-        name={navigationStrings.History}
-        component={Screens.History}
+        name={navigationStrings.UploadTab}
+        component={UploadTab}
       />
       <Tab.Screen
-        name={navigationStrings.Setting}
-        component={Screens.Setting}
+        name={navigationStrings.ScanTab}
+        component={ScanTab}
       />
     </Tab.Navigator>
   );

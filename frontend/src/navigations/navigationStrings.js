@@ -5,4 +5,6 @@ export default {
   Setting: "Setting",
   TabRoutes: "TabRoutes",
   History: "History",
+  ScanTab:"Scan",
+  UploadTab:"Upload",
 };
